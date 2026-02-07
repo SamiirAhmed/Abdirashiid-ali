@@ -1,0 +1,50 @@
+[
+    {
+        "name": "Work",
+        "type": "category",
+        "createdAt": "2026-01-15T08:00:00.000Z",
+        "updatedAt": "2026-01-15T08:00:00.000Z"
+    },
+    {
+        "name": "Personal",
+        "type": "category",
+        "createdAt": "2026-01-15T08:00:00.000Z",
+        "updatedAt": "2026-01-15T08:00:00.000Z"
+    },
+    {
+        "name": "Shopping",
+        "type": "category",
+        "createdAt": "2026-01-15T08:00:00.000Z",
+        "updatedAt": "2026-01-15T08:00:00.000Z"
+    },
+    {
+        "name": "Urgent",
+        "type": "category",
+        "createdAt": "2026-01-15T08:00:00.000Z",
+        "updatedAt": "2026-01-15T08:00:00.000Z"
+    },
+    {
+        "name": "Mobile App Development",
+        "type": "project",
+        "createdAt": "2026-01-15T08:00:00.000Z",
+        "updatedAt": "2026-01-15T08:00:00.000Z"
+    },
+    {
+        "name": "Website Redesign",
+        "type": "project",
+        "createdAt": "2026-01-15T08:00:00.000Z",
+        "updatedAt": "2026-01-15T08:00:00.000Z"
+    },
+    {
+        "name": "Marketing Campaign",
+        "type": "project",
+        "createdAt": "2026-01-15T08:00:00.000Z",
+        "updatedAt": "2026-01-15T08:00:00.000Z"
+    },
+    {
+        "name": "Main Project",
+        "type": "project",
+        "createdAt": "2026-01-15T08:00:00.000Z",
+        "updatedAt": "2026-01-15T08:00:00.000Z"
+    }
+]
