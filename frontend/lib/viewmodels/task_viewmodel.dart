@@ -1,18 +1,23 @@
 import 'package:flutter/material.dart';
 import '../../models/task_model.dart';
+import '../../models/user_model.dart';
 import '../../services/task_service.dart';
+import '../../services/auth_service.dart';
 
 // Task ViewModel
 class TaskViewModel extends ChangeNotifier {
   final TaskService _taskService = TaskService();
+  final AuthService _authService = AuthService();
   
   List<Task> _tasks = [];
+  List<User> _assignableUsers = [];
   List<String> _categories = [];
   List<String> _projects = [];
   bool _isLoading = false;
   String _error = '';
 
   List<Task> get tasks => _tasks;
+  List<User> get assignableUsers => _assignableUsers;
   List<String> get categories => _categories;
   List<String> get projects => _projects;
   bool get isLoading => _isLoading;
@@ -58,6 +63,35 @@ class TaskViewModel extends ChangeNotifier {
       notifyListeners();
     } catch (e) {
       print('Error fetching categories: $e');
+    }
+  }
+
+  // Fetch Users for Assignment (Admin Only)
+  Future<void> fetchUsers() async {
+    try {
+      _assignableUsers = await _authService.getUsers();
+      notifyListeners();
+    } catch (e) {
+      print('Error fetching users: $e');
+    }
+  }
+
+  // Mark Task as Completed
+  Future<bool> markAsCompleted(String id) async {
+    _setLoading(true);
+    try {
+      final updatedTask = await _taskService.updateTask(id, {'status': 'completed'});
+      final index = _tasks.indexWhere((t) => t.id == id);
+      if (index != -1) {
+        _tasks[index] = updatedTask;
+      }
+      notifyListeners();
+      return true;
+    } catch (e) {
+      _error = e.toString();
+      return false;
+    } finally {
+      _setLoading(false);
     }
   }
 

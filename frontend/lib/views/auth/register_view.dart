@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../viewmodels/auth_viewmodel.dart';
 import '../../viewmodels/task_viewmodel.dart';
+import '../widgets/app_logo.dart';
 
 // Shaashadda Is-diiwangalinta (Register Screen)
 class RegisterView extends StatefulWidget {
@@ -61,6 +62,8 @@ class _RegisterViewState extends State<RegisterView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              const AppLogo(size: 80),
+              const SizedBox(height: 16),
               const Text(
                 'Create a new account',
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),

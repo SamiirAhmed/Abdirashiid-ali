@@ -7,14 +7,17 @@ const getTasks = async (req, res) => {
     console.log(`Fetching tasks for user: ${req.user.email} (Role: ${req.user.role})`);
     try {
         let query = {};
-        
+
         // Hadii uusan aheyn admin, tus kaliya hawshiisa
         if (req.user.role !== 'admin') {
             query = { userId: req.user._id };
         }
 
-        const tasks = await Task.find(query).sort({ createdAt: -1 });
-        console.log(`[TASKS_API] Found ${tasks.length} tasks in database for user ${req.user.email}`);
+        const tasks = await Task.find(query)
+            .populate('userId', 'name email')
+            .sort({ createdAt: -1 });
+
+        console.log(`[TASKS_API] Found ${tasks.length} tasks in database`);
         res.json(tasks);
     } catch (error) {
         console.error('Error fetching tasks:', error);
@@ -26,10 +29,18 @@ const getTasks = async (req, res) => {
 // @route   POST /api/tasks
 // @access  Private
 const createTask = async (req, res) => {
-    const { title, description, priority, dueDate, category, project } = req.body;
+    const { title, description, priority, dueDate, category, project, userId } = req.body;
+
+    // Default userId is the logged in user
+    let assignedUserId = req.user._id;
+
+    // If admin provides a userId, use that instead
+    if (req.user.role === 'admin' && userId) {
+        assignedUserId = userId;
+    }
 
     const task = new Task({
-        userId: req.user._id,
+        userId: assignedUserId,
         title,
         description,
         priority,
@@ -42,7 +53,8 @@ const createTask = async (req, res) => {
         const createdTask = await task.save();
         res.status(201).json(createdTask);
     } catch (error) {
-        res.status(400).json({ message: 'Xog qaldan ayaad soo dirtay' });
+        console.error('Task Creation Error:', error);
+        res.status(400).json({ message: 'Xog qaldan ayaad soo dirtay: ' + error.message });
     }
 };
 

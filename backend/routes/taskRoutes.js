@@ -12,11 +12,11 @@ const router = express.Router();
 
 router.route('/')
     .get(protect, getTasks)
-    .post(protect, admin, createTask);
+    .post(protect, createTask);
 
 router.route('/:id')
     .get(protect, getTaskById)
-    .put(protect, admin, updateTask)
-    .delete(protect, admin, deleteTask);
+    .put(protect, updateTask)
+    .delete(protect, deleteTask);
 
 module.exports = router;

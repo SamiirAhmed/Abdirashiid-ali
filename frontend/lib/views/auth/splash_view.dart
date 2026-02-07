@@ -4,6 +4,7 @@ import '../../viewmodels/auth_viewmodel.dart';
 import '../../viewmodels/task_viewmodel.dart';
 import '../auth/login_view.dart';
 import '../dashboard/dashboard_view.dart';
+import '../widgets/app_logo.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 // Splash Screen
@@ -53,29 +54,16 @@ class _SplashViewState extends State<SplashView> {
   Widget build(BuildContext context) {
     final authVM = Provider.of<AuthViewModel>(context, listen: false);
     final taskVM = Provider.of<TaskViewModel>(context, listen: false);
-    return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
+    return const Scaffold(
+      backgroundColor: Colors.white,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(
-              Icons.task_alt,
-              size: 100,
-              color: Colors.white,
-            ),
-            const SizedBox(height: 20),
-            const Text(
-              'Task Management',
-              style: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
-            const SizedBox(height: 50),
-            const SpinKitThreeBounce(
-              color: Colors.white,
+            AppLogo(size: 120),
+            SizedBox(height: 50),
+            SpinKitThreeBounce(
+              color: Colors.blue,
               size: 30,
             ),
           ],

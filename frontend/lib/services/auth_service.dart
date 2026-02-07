@@ -73,4 +73,26 @@ class AuthService {
     }
     return null;
   }
+
+  // Helitaanka dhammaan dadka (Admin Only)
+  Future<List<User>> getUsers() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString(AppConstants.tokenKey);
+
+    final response = await http.get(
+      Uri.parse('${AppConstants.baseUrl}/auth/users'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final List<dynamic> usersData = jsonDecode(response.body);
+      return usersData.map((json) => User.fromJson(json)).toList();
+    } else {
+      final error = jsonDecode(response.body);
+      throw Exception(error['message'] ?? 'Way fashilantay soo qaadista dadka');
+    }
+  }
 }

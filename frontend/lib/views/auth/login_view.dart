@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../viewmodels/auth_viewmodel.dart';
 import '../../viewmodels/task_viewmodel.dart';
+import '../widgets/app_logo.dart';
 import 'register_view.dart';
 import '../dashboard/dashboard_view.dart';
 
@@ -54,11 +55,7 @@ class _LoginViewState extends State<LoginView> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Icon(
-                  Icons.task_alt,
-                  size: 100,
-                  color: Theme.of(context).primaryColor,
-                ),
+                const AppLogo(size: 100),
                 const SizedBox(height: 16),
                 Text(
                   'Welcome',

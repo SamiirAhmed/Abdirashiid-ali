@@ -2,6 +2,7 @@
 class Task {
   final String id;
   final String userId;
+  final String? userName; // Added to store the name of the user
   final String title;
   final String description;
   final String status;
@@ -13,6 +14,7 @@ class Task {
   Task({
     required this.id,
     required this.userId,
+    this.userName,
     required this.title,
     required this.description,
     required this.status,
@@ -23,9 +25,20 @@ class Task {
   });
 
   factory Task.fromJson(Map<String, dynamic> json) {
+    String uId = '';
+    String? uName;
+
+    if (json['userId'] is Map) {
+      uId = json['userId']['_id'] ?? '';
+      uName = json['userId']['name'];
+    } else {
+      uId = json['userId'] ?? '';
+    }
+
     return Task(
       id: json['_id'] ?? '',
-      userId: json['userId'] ?? '',
+      userId: uId,
+      userName: uName,
       title: json['title'] ?? '',
       description: json['description'] ?? '',
       status: json['status'] ?? 'pending',

@@ -19,6 +19,7 @@ class _TaskCreateViewState extends State<TaskCreateView> {
   String? _priority = 'medium';
   String? _category;
   String? _project;
+  String? _assignedUserId;
   DateTime? _dueDate;
 
   final List<String> _priorities = ['low', 'medium', 'high'];
@@ -27,21 +28,37 @@ class _TaskCreateViewState extends State<TaskCreateView> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<TaskViewModel>(context, listen: false).fetchCategories();
+      final taskVM = Provider.of<TaskViewModel>(context, listen: false);
+      final authVM = Provider.of<AuthViewModel>(context, listen: false);
+      
+      taskVM.fetchCategories();
+      
+      if (authVM.user?.role == 'admin') {
+        taskVM.fetchUsers();
+      }
     });
   }
 
   Future<void> _save() async {
     if (_formKey.currentState!.validate()) {
+      final authVM = Provider.of<AuthViewModel>(context, listen: false);
+      
+      final Map<String, dynamic> taskData = {
+        'title': _titleController.text,
+        'description': _descController.text,
+        'priority': _priority,
+        'category': _category,
+        'project': _project ?? 'Main Project',
+        'dueDate': _dueDate?.toIso8601String(),
+      };
+
+      // Hadii uu yahay admin, ku dar userId hadii uu qof doortay
+      if (authVM.user?.role == 'admin' && _assignedUserId != null) {
+        taskData['userId'] = _assignedUserId;
+      }
+
       final success = await Provider.of<TaskViewModel>(context, listen: false)
-          .addTask({
-            'title': _titleController.text,
-            'description': _descController.text,
-            'priority': _priority,
-            'category': _category,
-            'project': _project ?? 'Main Project',
-            'dueDate': _dueDate?.toIso8601String(),
-          });
+          .addTask(taskData);
 
       if (success && mounted) {
         Navigator.pop(context);
@@ -135,6 +152,30 @@ class _TaskCreateViewState extends State<TaskCreateView> {
                 },
               ),
               const SizedBox(height: 16),
+              if (authVM.user?.role == 'admin')
+                Consumer<TaskViewModel>(
+                  builder: (context, taskVM, child) {
+                    return DropdownButtonFormField<String>(
+                      value: _assignedUserId,
+                      decoration: const InputDecoration(
+                        labelText: 'Assign to User',
+                        hintText: 'Select a user',
+                        border: OutlineInputBorder(),
+                        prefixIcon: Icon(Icons.person),
+                      ),
+                      items: taskVM.assignableUsers
+                          .map((u) => DropdownMenuItem(
+                                value: u.id,
+                                child: Text(u.name),
+                              ))
+                          .toList(),
+                      onChanged: (val) => setState(() => _assignedUserId = val),
+                      validator: (value) =>
+                          (value == null) ? 'Please select a user' : null,
+                    );
+                  },
+                ),
+              if (authVM.user?.role == 'admin') const SizedBox(height: 16),
               ListTile(
                 title: Text(
                   _dueDate == null

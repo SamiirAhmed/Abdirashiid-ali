@@ -107,6 +107,21 @@ class TaskDetailView extends StatelessWidget {
                 ),
               ],
             ),
+            if (task.userName != null) const SizedBox(height: 10),
+            if (task.userName != null)
+              Row(
+                children: [
+                  const Icon(Icons.person, size: 16, color: Colors.blue),
+                  const SizedBox(width: 8),
+                  Text(
+                    'Assigned to: ${task.userName}',
+                    style: const TextStyle(
+                      color: Colors.blue,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
             const Divider(height: 40),
             const Text(
               'Description:',

@@ -74,7 +74,21 @@ class TaskListView extends StatelessWidget {
                           : null,
                     ),
                   ),
-                  subtitle: Text('${task.category} • ${task.project}'),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('${task.category} • ${task.project}'),
+                      if (task.userName != null)
+                        Text(
+                          'Assigned to: ${task.userName}',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.blue.shade700,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                    ],
+                  ),
                   trailing: Checkbox(
                     value: task.status == 'completed',
                     onChanged: (value) {
